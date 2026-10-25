@@ -1,4 +1,4 @@
-# App 2 - Stack moderno (PaaS Nébula Deploy): Node.js 20 + Express + PostgreSQL
+# Farmacia La Buena: Node.js 20 + Express + PostgreSQL
 FROM node:20-alpine
 ENV NODE_ENV=production
 WORKDIR /app

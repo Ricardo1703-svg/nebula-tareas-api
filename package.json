@@ -1,7 +1,7 @@
 {
-  "name": "nebula-node-api",
-  "version": "1.0.0",
-  "description": "App 2 - API RESTful de tareas en Node.js + Express + PostgreSQL, desplegada en Nébula Deploy",
+  "name": "farmacia-la-buena",
+  "version": "2.0.0",
+  "description": "Sistema de gestión de inventario, lotes, vencimientos y ventas para Farmacia La Buena",
   "main": "src/server.js",
   "scripts": { "start": "node src/server.js" },
   "engines": { "node": ">=20" },

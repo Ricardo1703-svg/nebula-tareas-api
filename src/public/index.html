@@ -1,42 +1,146 @@
 <!doctype html>
 <html lang="es">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Tareas</title>
-<link rel="stylesheet" href="estilos.css">
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#f4f7f3">
+  <title>Farmacia La Buena</title>
+  <link rel="stylesheet" href="estilos.css">
 </head>
 <body>
-<header>
-  <div class="marca">Tareas <span>API REST · Node.js + PostgreSQL · v1.1</span></div>
-  <div class="infra">Desplegado en <b id="plataforma">…</b> · pod <code id="pod">…</code></div>
-</header>
-<main>
-  <p class="nota">Esta página es un cliente de ejemplo: todo lo que ves se obtiene de <a href="/api">/api/tareas</a> con <code>fetch</code>.</p>
-  <section class="tarjeta">
-    <h2 id="titulo-form">Nueva tarea</h2>
-    <form id="form" class="formulario">
-      <input type="hidden" name="id">
-      <label class="ancho">Título<input name="titulo" maxlength="160" required></label>
-      <label>Estado<select name="estado"><option value="pendiente">Pendiente</option><option value="en_progreso">En progreso</option><option value="completada">Completada</option></select></label>
-      <label>Prioridad<select name="prioridad"><option value="1">Alta</option><option value="2" selected>Media</option><option value="3">Baja</option></select></label>
-      <label>Vence el<input name="vence_el" type="date"></label>
-      <label class="ancho">Descripción<textarea name="descripcion" rows="2" maxlength="2000"></textarea></label>
-      <div class="ancho acciones"><button class="primario" type="submit" id="guardar">Crear tarea</button><button type="button" id="cancelar" hidden>Cancelar</button></div>
-    </form>
-    <p id="msg" class="msg" hidden></p>
-  </section>
-  <section class="tarjeta">
-    <div class="fila">
-      <h2>Tareas <small id="stats"></small></h2>
-      <div class="filtros">
-        <select id="f-estado"><option value="">Todos los estados</option><option value="pendiente">Pendiente</option><option value="en_progreso">En progreso</option><option value="completada">Completada</option></select>
-        <input id="f-q" placeholder="Buscar">
+  <header class="barra-superior">
+    <a class="marca" href="#" aria-label="Farmacia La Buena, inicio">
+      <span class="marca-icono" aria-hidden="true">+</span>
+      <span>Farmacia <strong>La Buena</strong><small>Tu salud, nuestra prioridad</small></span>
+    </a>
+    <div class="estado-sistema"><span class="pulso"></span> Sistema operativo <code id="plataforma"></code></div>
+  </header>
+
+  <div class="disposicion">
+    <aside class="barra-lateral">
+      <p class="nav-titulo">GESTIÓN</p>
+      <nav aria-label="Secciones principales">
+        <button class="nav-enlace activo" data-vista="dashboard"><span aria-hidden="true">▦</span> Resumen</button>
+        <button class="nav-enlace" data-vista="inventario"><span aria-hidden="true">▤</span> Inventario</button>
+        <button class="nav-enlace" data-vista="ventas"><span aria-hidden="true">＄</span> Punto de venta</button>
+        <button class="nav-enlace" data-vista="vencimientos"><span aria-hidden="true">◷</span> Vencimientos <span id="badge-vencimientos" class="nav-badge" hidden>0</span></button>
+      </nav>
+      <div class="ayuda-lateral">
+        <span class="ayuda-icono" aria-hidden="true">i</span>
+        <strong>Control sencillo</strong>
+        <p>Administra productos, existencias y ventas desde un solo lugar.</p>
       </div>
-    </div>
-    <ul id="lista" class="lista"></ul>
-  </section>
-</main>
-<script src="app.js"></script>
+    </aside>
+
+    <main>
+      <section class="vista activa" id="vista-dashboard">
+        <div class="encabezado-vista">
+          <div><p class="sobrelinea">PANEL DE CONTROL</p><h1>Buenos días</h1><p class="subtitulo">Aquí tienes el estado de tu farmacia.</p></div>
+          <button class="boton primario" data-ir="ventas"><span aria-hidden="true">＋</span> Nueva venta</button>
+        </div>
+        <div class="metricas">
+          <article class="metrica"><span class="metrica-icono verde" aria-hidden="true">▤</span><div><p>Productos activos</p><strong id="stat-productos">—</strong></div></article>
+          <article class="metrica"><span class="metrica-icono naranja" aria-hidden="true">!</span><div><p>Stock bajo</p><strong id="stat-stock-bajo">—</strong></div></article>
+          <article class="metrica"><span class="metrica-icono azul" aria-hidden="true">◷</span><div><p>Por vencer en 30 días</p><strong id="stat-vencer">—</strong></div></article>
+          <article class="metrica"><span class="metrica-icono menta" aria-hidden="true">$</span><div><p>Ventas de hoy</p><strong id="stat-ventas-hoy">—</strong><small id="stat-transacciones"></small></div></article>
+        </div>
+        <div class="paneles-dashboard">
+          <section class="panel">
+            <div class="panel-cabecera"><div><p class="sobrelinea">ATENCIÓN</p><h2>Alertas de inventario</h2></div><button class="enlace" data-ir="vencimientos">Ver vencimientos →</button></div>
+            <div id="resumen-alertas" class="lista-alertas"><p class="cargando">Cargando alertas…</p></div>
+          </section>
+          <section class="panel">
+            <div class="panel-cabecera"><div><p class="sobrelinea">ACTIVIDAD</p><h2>Ventas recientes</h2></div><button class="enlace" data-ir="ventas">Ver todas →</button></div>
+            <div id="resumen-ventas" class="lista-ventas"><p class="cargando">Cargando ventas…</p></div>
+          </section>
+        </div>
+      </section>
+
+      <section class="vista" id="vista-inventario" hidden>
+        <div class="encabezado-vista">
+          <div><p class="sobrelinea">CATÁLOGO Y EXISTENCIAS</p><h1>Inventario</h1><p class="subtitulo">Administra productos y entradas por lote.</p></div>
+          <button class="boton primario" id="nuevo-producto"><span aria-hidden="true">＋</span> Agregar producto</button>
+        </div>
+        <section class="panel">
+          <div class="barra-filtros">
+            <label class="buscador"><span aria-hidden="true">⌕</span><input id="buscar-producto" type="search" placeholder="Buscar por nombre, código o categoría" autocomplete="off"></label>
+            <select id="filtro-stock" aria-label="Filtrar inventario"><option value="">Todo el inventario</option><option value="stock">Stock bajo</option></select>
+          </div>
+          <div class="tabla-contenedor">
+            <table><thead><tr><th>PRODUCTO</th><th>CATEGORÍA</th><th>PRECIO</th><th>EXISTENCIAS</th><th>VENCE PRONTO</th><th></th></tr></thead>
+              <tbody id="tabla-productos"><tr><td colspan="6" class="cargando">Cargando productos…</td></tr></tbody>
+            </table>
+          </div>
+          <p id="conteo-productos" class="pie-tabla"></p>
+        </section>
+      </section>
+
+      <section class="vista" id="vista-ventas" hidden>
+        <div class="encabezado-vista">
+          <div><p class="sobrelinea">CAJA</p><h1>Punto de venta</h1><p class="subtitulo">Agrega productos y registra una venta.</p></div>
+        </div>
+        <div class="venta-layout">
+          <section class="panel">
+            <div class="panel-cabecera"><div><p class="sobrelinea">CATÁLOGO</p><h2>Selecciona productos</h2></div></div>
+            <label class="buscador buscador-venta"><span aria-hidden="true">⌕</span><input id="buscar-venta" type="search" placeholder="Buscar producto..." autocomplete="off"></label>
+            <div id="catalogo-venta" class="catalogo-venta"><p class="cargando">Cargando productos…</p></div>
+          </section>
+          <section class="panel panel-carrito">
+            <div class="panel-cabecera"><div><p class="sobrelinea">NUEVA TRANSACCIÓN</p><h2>Resumen de venta</h2></div><span id="cantidad-carrito" class="contador">0</span></div>
+            <div id="carrito" class="carrito"><p class="carrito-vacio">Todavía no agregas productos.</p></div>
+            <div class="total-venta"><span>Total</span><strong id="total-venta">$0.00</strong></div>
+            <button id="registrar-venta" class="boton primario boton-ancho" disabled>Completar venta</button>
+            <p class="nota-venta">La venta descuenta primero los lotes próximos a vencer.</p>
+          </section>
+        </div>
+        <section class="panel panel-historial">
+          <div class="panel-cabecera"><div><p class="sobrelinea">MOVIMIENTOS</p><h2>Ventas recientes</h2></div></div>
+          <div id="historial-ventas" class="lista-ventas"><p class="cargando">Cargando ventas…</p></div>
+        </section>
+      </section>
+
+      <section class="vista" id="vista-vencimientos" hidden>
+        <div class="encabezado-vista">
+          <div><p class="sobrelinea">CONTROL DE LOTES</p><h1>Vencimientos</h1><p class="subtitulo">Lotes vencidos y próximos a vencer durante los siguientes 90 días.</p></div>
+        </div>
+        <section class="panel">
+          <div id="tabla-vencimientos" class="tabla-contenedor"><p class="cargando">Cargando lotes…</p></div>
+        </section>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="dialogo-producto" class="dialogo">
+    <form id="form-producto">
+      <div class="dialogo-cabecera"><div><p class="sobrelinea">CATÁLOGO</p><h2 id="titulo-dialogo-producto">Agregar producto</h2></div><button type="button" class="cerrar-dialogo" data-cerrar="dialogo-producto" aria-label="Cerrar">×</button></div>
+      <input name="id" type="hidden">
+      <div class="form-grid">
+        <label>Código de barras o SKU<input name="codigo" maxlength="40" required placeholder="Ej. 7501234567890"></label>
+        <label>Nombre del producto<input name="nombre" maxlength="160" required placeholder="Ej. Paracetamol 500 mg"></label>
+        <label>Categoría<input name="categoria" maxlength="80" required value="Medicamentos"></label>
+        <label>Laboratorio<input name="laboratorio" maxlength="120" placeholder="Opcional"></label>
+        <label>Precio de venta<input name="precio" type="number" min="0" step="0.01" required placeholder="0.00"></label>
+        <label>Stock mínimo<input name="stock_minimo" type="number" min="0" step="1" value="5" required></label>
+        <label class="campo-completo">Descripción<textarea name="descripcion" rows="2" maxlength="2000" placeholder="Presentación u otra información"></textarea></label>
+      </div>
+      <div class="dialogo-acciones"><button type="button" class="boton secundario" data-cerrar="dialogo-producto">Cancelar</button><button class="boton primario" type="submit">Guardar producto</button></div>
+    </form>
+  </dialog>
+
+  <dialog id="dialogo-lote" class="dialogo">
+    <form id="form-lote">
+      <div class="dialogo-cabecera"><div><p class="sobrelinea">ENTRADA DE INVENTARIO</p><h2>Agregar lote</h2><p id="nombre-lote" class="subtitulo"></p></div><button type="button" class="cerrar-dialogo" data-cerrar="dialogo-lote" aria-label="Cerrar">×</button></div>
+      <input name="producto_id" type="hidden">
+      <div class="form-grid">
+        <label>Código del lote<input name="codigo_lote" maxlength="60" required></label>
+        <label>Fecha de vencimiento<input name="vence_el" type="date" required></label>
+        <label>Cantidad recibida<input name="cantidad" type="number" min="1" step="1" required></label>
+      </div>
+      <div class="dialogo-acciones"><button type="button" class="boton secundario" data-cerrar="dialogo-lote">Cancelar</button><button class="boton primario" type="submit">Registrar entrada</button></div>
+    </form>
+  </dialog>
+
+  <div id="notificacion" class="notificacion" role="status" aria-live="polite" hidden></div>
+  <script src="app.js"></script>
 </body>
 </html>
