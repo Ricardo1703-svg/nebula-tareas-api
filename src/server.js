@@ -83,7 +83,7 @@ app.get('/health', wrap(async (_req, res) => {
 }));
 
 app.get('/api', (_req, res) => res.json({
-  nombre: 'API de tareas', version: '1.0.0', plataforma: 'Nébula Deploy', pod: os.hostname(),
+  nombre: 'API de tareas', version: '1.1.0', plataforma: 'Nébula Deploy', pod: os.hostname(),
   endpoints: {
     'GET /api/tareas': 'Listar (filtros: ?estado=&q=&page=&limit=)',
     'GET /api/tareas/:id': 'Obtener una tarea',
