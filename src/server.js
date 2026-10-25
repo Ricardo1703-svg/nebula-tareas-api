@@ -426,7 +426,12 @@ app.post('/api/ventas', wrap(async (req, res) => {
 }));
 
 app.use('/api', (_req, _res, next) => next(new ApiError(404, 'Ruta no encontrada')));
-app.use(express.static(path.join(__dirname, 'public'), { maxAge: '1h' }));
+app.use(express.static(path.join(__dirname, 'public'), {
+  maxAge: 0,
+  setHeaders(res) {
+    res.setHeader('Cache-Control', 'no-cache, must-revalidate');
+  },
+}));
 
 app.use((err, _req, res, _next) => {
   if (err.type === 'entity.parse.failed') err = new ApiError(400, 'JSON mal formado');
