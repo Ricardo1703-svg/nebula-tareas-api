@@ -1,5 +1,5 @@
 'use strict';
-// App 2 - API RESTful de tareas (Express + PostgreSQL), desplegada en Treevoxa.
+// App 2 - API RESTful de tareas (Express + PostgreSQL), desplegada en Nébula Deploy.
 const os = require('os');
 const path = require('path');
 const express = require('express');

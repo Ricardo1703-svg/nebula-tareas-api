@@ -1,7 +1,7 @@
-# Tareas · App 2 (stack moderno) — Treevoxa
+# Tareas · App 2 (stack moderno) — Nébula Deploy
 
 API RESTful en **Node.js 20 + Express** con **PostgreSQL 16** administrado.
-Se despliega en la PaaS **Treevoxa**: cada `git push` a `main` se construye y publica solo.
+Se despliega en la PaaS **Nébula Deploy**: cada `git push` a `main` se construye y publica solo.
 
 ## Variables de entorno
 El código **no contiene credenciales ni cadenas de conexión**. Las genera la plataforma y las
@@ -10,7 +10,7 @@ inyecta desde un Secret de Kubernetes; se consultan en el panel (*Mis aplicacion
 | Variable | Origen |
 |---|---|
 | `DB_HOST`, `DB_PORT` | Servicio de la base de datos administrada |
-| `DB_NAME`, `DB_USER`, `DB_PASSWORD` | Secret generado por Treevoxa |
+| `DB_NAME`, `DB_USER`, `DB_PASSWORD` | Secret generado por Nébula Deploy |
 | `NODE_ENV`, `PLATAFORMA` y las demás | Panel → *Editar* → Variables de entorno |
 
 Si falta alguna, el proceso termina con un error explícito en lugar de usar valores por defecto.
