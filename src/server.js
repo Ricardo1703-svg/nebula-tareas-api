@@ -1,5 +1,5 @@
 'use strict';
-// App 2 - API RESTful de tareas (Express + PostgreSQL), desplegada en Nébula Deploy.
+// App 2 - API RESTful de tareas (Express + PostgreSQL), desplegada en Treevoxa.
 const os = require('os');
 const path = require('path');
 const express = require('express');
@@ -83,7 +83,7 @@ app.get('/health', wrap(async (_req, res) => {
 }));
 
 app.get('/api', (_req, res) => res.json({
-  nombre: 'API de tareas', version: '1.1.0', plataforma: 'Nébula Deploy', pod: os.hostname(),
+  nombre: 'API de tareas', version: '1.1.0', plataforma: process.env.PLATAFORMA || 'la PaaS', pod: os.hostname(),
   endpoints: {
     'GET /api/tareas': 'Listar (filtros: ?estado=&q=&page=&limit=)',
     'GET /api/tareas/:id': 'Obtener una tarea',

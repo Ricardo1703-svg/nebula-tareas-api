@@ -1,7 +1,7 @@
 {
   "name": "nebula-node-api",
   "version": "1.0.0",
-  "description": "App 2 - API RESTful de tareas en Node.js + Express + PostgreSQL, desplegada en Nébula Deploy",
+  "description": "App 2 - API RESTful de tareas en Node.js + Express + PostgreSQL, desplegada en Treevoxa",
   "main": "src/server.js",
   "scripts": { "start": "node src/server.js" },
   "engines": { "node": ">=20" },

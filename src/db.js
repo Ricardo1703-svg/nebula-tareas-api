@@ -1,12 +1,12 @@
 'use strict';
-// Pool de conexiones a la base de datos PostgreSQL administrada por Nébula Deploy.
+// Pool de conexiones a la base de datos PostgreSQL administrada por Treevoxa.
 // La plataforma inyecta DB_HOST, DB_PORT, DB_NAME, DB_USER y DB_PASSWORD desde un Secret.
 const { Pool } = require('pg');
 
 // Sin valores por defecto: las credenciales solo existen en el panel de la PaaS
 const faltan = ['DB_HOST', 'DB_PORT', 'DB_NAME', 'DB_USER', 'DB_PASSWORD'].filter((k) => !process.env[k]);
 if (faltan.length) {
-  console.error('Faltan variables de entorno: ' + faltan.join(', ') + ' (configúralas en el panel de Nébula Deploy)');
+  console.error('Faltan variables de entorno: ' + faltan.join(', ') + ' (configúralas en el panel de Treevoxa)');
   process.exit(1);
 }
 

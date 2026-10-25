@@ -85,6 +85,10 @@
   document.getElementById('cancelar').onclick = limpiar;
   fEstado.onchange = cargar;
   var t; fQ.oninput = function () { clearTimeout(t); t = setTimeout(cargar, 300); };
-  api('GET', '/api').then(function (i) { document.getElementById('pod').textContent = i.pod; }).catch(function () {});
+  api('GET', '/api').then(function (i) {
+    document.getElementById('pod').textContent = i.pod;
+    document.getElementById('plataforma').textContent = i.plataforma;
+    document.title = 'Tareas · ' + i.plataforma;
+  }).catch(function () {});
   cargar();
 })();
