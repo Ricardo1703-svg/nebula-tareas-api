@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Tareas · Nébula Deploy</title>
+<link rel="stylesheet" href="estilos.css">
+</head>
+<body>
+<header>
+  <div class="marca">Tareas <span>API REST · Node.js + PostgreSQL</span></div>
+  <div class="infra">Desplegado en <b>Nébula Deploy</b> · pod <code id="pod">…</code></div>
+</header>
+<main>
+  <p class="nota">Esta página es un cliente de ejemplo: todo lo que ves se obtiene de <a href="/api">/api/tareas</a> con <code>fetch</code>.</p>
+  <section class="tarjeta">
+    <h2 id="titulo-form">Nueva tarea</h2>
+    <form id="form" class="formulario">
+      <input type="hidden" name="id">
+      <label class="ancho">Título<input name="titulo" maxlength="160" required></label>
+      <label>Estado<select name="estado"><option value="pendiente">Pendiente</option><option value="en_progreso">En progreso</option><option value="completada">Completada</option></select></label>
+      <label>Prioridad<select name="prioridad"><option value="1">Alta</option><option value="2" selected>Media</option><option value="3">Baja</option></select></label>
+      <label>Vence el<input name="vence_el" type="date"></label>
+      <label class="ancho">Descripción<textarea name="descripcion" rows="2" maxlength="2000"></textarea></label>
+      <div class="ancho acciones"><button class="primario" type="submit" id="guardar">Crear tarea</button><button type="button" id="cancelar" hidden>Cancelar</button></div>
+    </form>
+    <p id="msg" class="msg" hidden></p>
+  </section>
+  <section class="tarjeta">
+    <div class="fila">
+      <h2>Tareas <small id="stats"></small></h2>
+      <div class="filtros">
+        <select id="f-estado"><option value="">Todos los estados</option><option value="pendiente">Pendiente</option><option value="en_progreso">En progreso</option><option value="completada">Completada</option></select>
+        <input id="f-q" placeholder="Buscar">
+      </div>
+    </div>
+    <ul id="lista" class="lista"></ul>
+  </section>
+</main>
+<script src="app.js"></script>
+</body>
+</html>

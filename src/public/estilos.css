@@ -1,0 +1,33 @@
+:root{--bg:#0f1220;--panel:#171b2e;--text:#e7e9f3;--muted:#9aa0b8;--line:#2a3050;--accent:#7c5cff;--ok:#3ddc97;--bad:#ff6b6b;--warn:#f7c948}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font:15px/1.5 system-ui,-apple-system,Segoe UI,Roboto,sans-serif}
+a{color:var(--accent)}
+header{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:8px;padding:14px 24px;background:var(--panel);border-bottom:3px solid var(--accent)}
+.marca{font-size:20px;font-weight:700}.marca span{font-size:13px;font-weight:500;color:var(--accent);margin-left:6px}
+.infra{font-size:13px;color:var(--muted)}
+main{max-width:960px;margin:0 auto;padding:20px 16px 60px}
+.nota{color:var(--muted);font-size:13px}
+h2{margin:0 0 12px;font-size:19px}h2 small{font-size:13px;font-weight:400;color:var(--muted);margin-left:6px}
+.tarjeta{background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:18px;margin:16px 0}
+.formulario{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.formulario label{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
+.ancho{grid-column:1/-1}
+input,select,textarea{font:inherit;color:var(--text);background:var(--bg);border:1px solid var(--line);border-radius:8px;padding:8px 10px;width:100%}
+input:focus,select:focus,textarea:focus{outline:2px solid var(--accent);outline-offset:-1px}
+button{font:inherit;font-size:14px;border:1px solid var(--line);background:var(--bg);color:var(--text);border-radius:8px;padding:6px 12px;cursor:pointer}
+button:hover{border-color:var(--accent)}
+.primario{background:var(--accent);border-color:var(--accent);color:#fff;font-weight:600}
+.peligro{color:var(--bad)}
+.acciones{display:flex;gap:6px;flex-wrap:wrap}
+.fila{display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:10px}
+.filtros{display:flex;gap:6px}.filtros select,.filtros input{width:auto}
+.lista{list-style:none;padding:0;margin:0}
+.tarea{border:1px solid var(--line);border-left:4px solid var(--warn);border-radius:8px;padding:10px 14px;margin:8px 0}
+.tarea.en_progreso{border-left-color:var(--accent)}.tarea.completada{border-left-color:var(--ok);opacity:.75}
+.cab{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+.chip{border:1px solid var(--line);border-radius:99px;padding:0 9px;font-size:12px;color:var(--muted)}
+.chip.p1{color:var(--bad);border-color:var(--bad)}
+.desc{margin:6px 0;color:var(--muted);font-size:14px;white-space:pre-wrap}
+.vacio{color:var(--muted)}
+.msg{padding:8px 12px;border-radius:8px;border:1px solid var(--ok);color:var(--ok);margin:12px 0 0}.msg.malo{border-color:var(--bad);color:var(--bad)}
+@media (max-width:640px){.formulario{grid-template-columns:1fr}.filtros{width:100%}.filtros input{flex:1}}
